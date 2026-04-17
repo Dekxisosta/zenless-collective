@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Halloween Sale",
+    "date": "Nov 1 - 30",
+    "image": "/images/event_1.jpg",
+    "tag": "Limited"
+  },
+  {
+    "id": 2,
+    "title": "Hololive Collab Sale",
+    "date": "April 12 - 30",
+    "image": "/images/event_2.jpg",
+    "tag": "Popular"
+  },
+  {
+    "id": 3,
+    "title": "RTX Sale",
+    "date": "August 12 - 18",
+    "image": "/images/event_3.jpg",
+    "tag": "Hot"
+  },
+  {
+    "id": 4,
+    "title": "Back to School",
+    "date": "September 1",
+    "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop",
+    "tag": null
+  }
+]
