@@ -69,7 +69,7 @@ const Footer = () => {
               className="text-xl font-bold"
               style={{ color: "var(--color-primary)" }}
             >
-              Zelphyra
+              Zenless Collective
             </h2>
 
             <p

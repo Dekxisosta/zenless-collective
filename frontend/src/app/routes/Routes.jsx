@@ -16,12 +16,16 @@ import { TermsOfService } from "../../features/tos";
 
 import { DashboardPage, ProductsAdminPage } from "../../features/admin";
 
-import {ErrorComponent} from "../../shared";
+import {ErrorComponent, ThemeProvider} from "../../shared";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    ),
     children: [
       {
         element: <UserLayout />,
