@@ -20,8 +20,7 @@ export default function Navbar() {
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/products", label: "Products" },
-    { to: "/about", label: "About" },
-    { to: "/profile", label: "Profile" },
+    { to: "/about", label: "About" }
   ];
 
   useEffect(() => {
@@ -150,8 +149,12 @@ export default function Navbar() {
             ))}
           </div>
 
-          <Link to="/" className="flex items-center">
-            <img src={logo_dark} className="h-10 w-auto pr-3" alt="logo" />
+          <Link to="/" className="absolute md:left-1/2 md:-translate-x-1/2 flex items-center">
+            <img
+              src={theme === "light" ? logo_light : logo_dark}
+              className="h-16 w-auto"
+              alt="logo"
+            />
           </Link>
 
           {/* RIGHT ACTIONS */}
@@ -174,26 +177,35 @@ export default function Navbar() {
             <Link to="/profile">
               <img
                 src={user}
-                className="w-8 h-8 opacity-70 hover:opacity-100 transition rounded-full"
+                className="w-9 h-9 opacity-70 hover:opacity-100 transition rounded-full object-cover object-center"
                 alt="profile"
               />
             </Link>
           </div>
           
           {/* MOBILE HAMBURGER */}
-          <button
-            ref={hamburgerRef}
-            className="md:hidden ml-auto flex flex-col gap-1"
-            onClick={() => setOpen(!open)}
-          >
-            {[1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className="w-6 h-[2px]"
-                style={{ backgroundColor: "var(--color-text)" }}
+          <div className="md:hidden ml-auto flex items-center gap-3">
+            <Link to="/profile">
+              <img
+                src={user}
+                className="w-9 h-9 opacity-70 hover:opacity-100 transition rounded-full object-cover object-center"
+                alt="profile"
               />
-            ))}
-          </button>
+            </Link>
+            <button
+              ref={hamburgerRef}
+              className="flex flex-col gap-1 rounded-none"
+              onClick={() => setOpen(!open)}
+            >
+              {[1, 2, 3].map((i) => (
+                <span
+                  key={i}
+                  className="w-6 h-[2px]"
+                  style={{ backgroundColor: "var(--color-text)" }}
+                />
+              ))}
+            </button>
+          </div>
           
         </div>
         

@@ -1,215 +1,170 @@
-export default function AboutPage() {
+import { useState } from "react";
+import AboutImage from "/images/about.png";
+
+const values = [
+  { num: "01", title: "SIMPLICITY", desc: "No unnecessary clutter. Just clean design that respects your attention." },
+  { num: "02", title: "SPEED", desc: "Fast navigation and instant feedback. Every millisecond counts." },
+  { num: "03", title: "CLARITY", desc: "Everything is easy to understand and use. No surprises." },
+];
+
+const team = [
+  { title: "DESIGN", role: "UI/UX Systems" },
+  { title: "ENGINEERING", role: "Frontend + Performance" },
+  { title: "EXPERIENCE", role: "User Flow + Interaction" },
+];
+
+const stats = [
+  { value: "500+", label: "Curated Products" },
+  { value: "10K+", label: "Active Users" },
+  { value: "<1s", label: "Load Time" },
+];
+
+function Card3D({ children, accent = false, depth = 6 }) {
+  const [hovered, setHovered] = useState(false);
   return (
     <div
-      className="min-h-screen px-6 py-12"
-      style={{
-        backgroundColor: "var(--color-surface)",
-        color: "var(--color-text)",
-      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ position: "relative", transform: hovered ? "translate(-3px, -3px)" : "translate(0,0)", transition: "transform 0.15s ease" }}
     >
-      <div className="max-w-4xl mx-auto space-y-14">
+      {Array.from({ length: depth }).map((_, i) => (
+        <div key={i} style={{
+          position: "absolute",
+          inset: 0,
+          background: accent ? "var(--color-primary)" : "var(--color-border)",
+          transform: `translate(${i + 1}px, ${i + 1}px)`,
+          zIndex: -1,
+        }} />
+      ))}
+      <div style={{
+        background: "var(--color-surface)",
+        border: "1.5px solid var(--color-border)",
+        padding: "1.5rem",
+        position: "relative",
+        zIndex: 1,
+      }}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
-        {/* HEADER */}
-        <div className="text-center space-y-3">
-          <h1 className="text-4xl font-bold">About Zelphyra Collective</h1>
-          <p
-            style={{ color: "var(--color-text-muted)" }}
-            className="text-sm md:text-base"
-          >
+function Section({ title, children }) {
+  return (
+    <div style={{ marginBottom: "3.5rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.25rem" }}>
+        <h2 style={{ fontFamily: "var(--font-normal)", fontSize: 26, letterSpacing: 1, whiteSpace: "nowrap", color: "var(--color-text)" }}>
+          {title}
+        </h2>
+        <div style={{ flex: 1, height: 1, background: "var(--color-border)" }} />
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function Divider({ label }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem", margin: "3rem 0 2rem" }}>
+      <div style={{ flex: 1, height: 1, background: "var(--color-border)" }} />
+      <span style={{ fontSize: 11, letterSpacing: 3, color: "var(--color-primary)", textTransform: "uppercase", whiteSpace: "nowrap", fontFamily: "var(--font-header)" }}>
+        {label}
+      </span>
+      <div style={{ flex: 1, height: 1, background: "var(--color-border)" }} />
+    </div>
+  );
+}
+
+export default function AboutPage() {
+  return (
+    <div style={{ fontFamily: "var(--font-header)", maxWidth: 900, margin: "0 auto", padding: "3rem 1.5rem", color: "var(--color-text)" }}>
+
+      {/* HERO */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "center", marginBottom: "4rem", paddingBottom: "3rem", borderBottom: "1px solid var(--color-border)" }}>
+        <div style={{ position: "relative" }}>
+          <img src={AboutImage} alt="Zenless Collective" style={{ width: "100%", display: "block", filter: "grayscale(10%) contrast(1.05)" }} />
+          <div style={{ position: "absolute", inset: 0, border: "2px solid var(--color-primary)", transform: "translate(8px, 8px)", zIndex: -1, pointerEvents: "none" }} />
+        </div>
+        <div>
+          <p style={{ fontFamily: "var(--font-header)", fontSize: 11, letterSpacing: 3, color: "var(--color-primary)", textTransform: "uppercase", marginBottom: "0.5rem" }}>
+            // EST. 2024
+          </p>
+          <h1 style={{ fontFamily: "var(--font-normal)", fontSize: "clamp(52px, 8vw, 80px)", lineHeight: 0.95, letterSpacing: 1, marginBottom: "1rem", color: "var(--color-text)" }}>
+            ZENLESS<br />
+            <span style={{ color: "var(--color-primary)" }}>COLLEC</span><br />
+            TIVE_
+          </h1>
+          <p style={{ fontSize: 15, lineHeight: 1.8, color: "var(--color-text-muted)" }}>
             A modern ecommerce experience built for simplicity, clarity, and style.
+            No clutter. No noise. Just products that matter.
           </p>
         </div>
-
-        {/* STORY */}
-        <section className="space-y-3">
-          <h2 className="text-xl font-semibold">Our Story</h2>
-          <p style={{ color: "var(--color-text-muted)" }}>
-            Zelphyra Collective started as a small idea — build a clean, fast,
-            and distraction-free shopping experience. No clutter, no noise,
-            just products that matter and a smooth user experience.
-          </p>
-        </section>
-
-        {/* MISSION */}
-        <section className="space-y-3">
-          <h2 className="text-xl font-semibold">Our Mission</h2>
-          <p style={{ color: "var(--color-text-muted)" }}>
-            We aim to simplify online shopping by focusing on performance,
-            usability, and design. Every interaction is built to feel smooth,
-            responsive, and intentional.
-          </p>
-        </section>
-
-        {/* VISION */}
-        <section className="space-y-3">
-          <h2 className="text-xl font-semibold">Our Vision</h2>
-          <p style={{ color: "var(--color-text-muted)" }}>
-            To create a shopping ecosystem where discovery feels natural,
-            products feel curated, and users never feel overwhelmed by choice.
-          </p>
-        </section>
-
-        {/* VALUES */}
-        <section className="space-y-6">
-          <h2 className="text-xl font-semibold">What We Value</h2>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              {
-                title: "Simplicity",
-                desc: "No unnecessary clutter. Just clean design.",
-              },
-              {
-                title: "Speed",
-                desc: "Fast navigation and instant feedback.",
-              },
-              {
-                title: "Clarity",
-                desc: "Everything is easy to understand and use.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="p-4 rounded-xl border"
-                style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "rgba(255,255,255,0.02)",
-                }}
-              >
-                <h3 className="font-semibold mb-2">{item.title}</h3>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--color-text-muted)" }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* TEAM */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">The Team</h2>
-          <p style={{ color: "var(--color-text-muted)" }}>
-            A small group of designers and developers focused on building
-            clean, performant interfaces. We care more about how something
-            feels than how complex it looks.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-4 pt-2">
-            {[
-              { name: "Design", role: "UI/UX Systems" },
-              { name: "Engineering", role: "Frontend + Performance" },
-              { name: "Experience", role: "User Flow + Interaction" },
-            ].map((t) => (
-              <div
-                key={t.name}
-                className="p-4 rounded-xl border"
-                style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "rgba(0,0,0,0.03)",
-                }}
-              >
-                <p className="font-semibold">{t.name}</p>
-                <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-                  {t.role}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* STATS */}
-        <section className="grid md:grid-cols-3 gap-4">
-          {[
-            { label: "Curated Products", value: "500+" },
-            { label: "Active Users", value: "10K+" },
-            { label: "Average Load Time", value: "<1s" },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="text-center p-6 rounded-xl border"
-              style={{
-                borderColor: "var(--color-border)",
-                backgroundColor: "rgba(255,255,255,0.02)",
-              }}
-            >
-              <p className="text-2xl font-bold">{s.value}</p>
-              <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-                {s.label}
-              </p>
-            </div>
-          ))}
-        </section>
-
-        {/* VALUES (existing kept) */}
-        <section className="space-y-6">
-          <h2 className="text-xl font-semibold">What We Value</h2>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {[
-              {
-                title: "Simplicity",
-                desc: "No unnecessary clutter. Just clean design.",
-              },
-              {
-                title: "Speed",
-                desc: "Fast navigation and instant feedback.",
-              },
-              {
-                title: "Clarity",
-                desc: "Everything is easy to understand and use.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="p-4 rounded-xl border"
-                style={{
-                  borderColor: "var(--color-border)",
-                  backgroundColor: "rgba(255,255,255,0.02)",
-                }}
-              >
-                <h3 className="font-semibold mb-2">{item.title}</h3>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--color-text-muted)" }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section
-          className="text-center p-8 rounded-xl border"
-          style={{
-            borderColor: "var(--color-border)",
-            backgroundColor: "rgba(0,0,0,0.05)",
-          }}
-        >
-          <h2 className="text-lg font-semibold mb-2">Ready to explore?</h2>
-          <p
-            className="text-sm mb-4"
-            style={{ color: "var(--color-text-muted)" }}
-          >
-            Check out our latest products and start shopping.
-          </p>
-
-          <a
-            href="/products"
-            className="inline-block px-5 py-2 rounded-xl font-semibold text-sm transition-opacity hover:opacity-90"
-            style={{
-              backgroundColor: "var(--color-primary)",
-              color: "white",
-            }}
-          >
-            Browse Products
-          </a>
-        </section>
       </div>
+
+      {/* STATS */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem", marginBottom: "4rem" }}>
+        {stats.map((s) => (
+          <Card3D key={s.label} accent>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "var(--font-normal)", fontSize: 40, color: "var(--color-primary)", lineHeight: 1 }}>{s.value}</div>
+              <div style={{ fontSize: 11, letterSpacing: 2, textTransform: "uppercase", color: "var(--color-text-muted)", marginTop: "0.4rem" }}>{s.label}</div>
+            </div>
+          </Card3D>
+        ))}
+      </div>
+
+      {/* STORY */}
+      <Section title="OUR_STORY">
+        <p style={{ fontSize: 15, lineHeight: 1.9, color: "var(--color-text-muted)" }}>
+          Zenless Collective started as a small idea — build a clean, fast, and distraction-free shopping experience. No clutter, no noise, just products that matter and a smooth user experience that gets out of your way.
+        </p>
+      </Section>
+
+      <Section title="MISSION">
+        <p style={{ fontSize: 15, lineHeight: 1.9, color: "var(--color-text-muted)" }}>
+          We aim to simplify online shopping by focusing on performance, usability, and design. Every interaction is built to feel smooth, responsive, and intentional.
+        </p>
+      </Section>
+
+      <Section title="VISION">
+        <p style={{ fontSize: 15, lineHeight: 1.9, color: "var(--color-text-muted)" }}>
+          To create a shopping ecosystem where discovery feels natural, products feel curated, and users never feel overwhelmed by choice.
+        </p>
+      </Section>
+
+      <Divider label="// WHAT WE VALUE" />
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem", marginBottom: "3.5rem" }}>
+        {values.map((v) => (
+          <Card3D key={v.title}>
+            <span style={{ fontFamily: "var(--font-normal)", fontSize: 44, color: "var(--color-primary)", opacity: 0.15, position: "absolute", top: 8, right: 12, lineHeight: 1, pointerEvents: "none" }}>{v.num}</span>
+            <h3 style={{ fontFamily: "var(--font-normal)", fontSize: 20, letterSpacing: 0.5, marginBottom: "0.5rem", color: "var(--color-text)" }}>{v.title}</h3>
+            <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--color-text-muted)" }}>{v.desc}</p>
+          </Card3D>
+        ))}
+      </div>
+
+      <Divider label="// THE TEAM" />
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem", marginBottom: "4rem" }}>
+        {team.map((t) => (
+          <Card3D key={t.title}>
+            <h3 style={{ fontFamily: "var(--font-normal)", fontSize: 20, letterSpacing: 0.5, marginBottom: "0.25rem", color: "var(--color-text)" }}>{t.title}</h3>
+            <p style={{ fontSize: 13, color: "var(--color-text-muted)" }}>{t.role}</p>
+          </Card3D>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <Card3D accent>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+          <h2 style={{ fontFamily: "var(--font-normal)", fontSize: 30, letterSpacing: 0.5, color: "var(--color-text)" }}>READY TO EXPLORE?</h2>
+          <a href="/products" style={{ fontFamily: "var(--font-header)", fontSize: 12, letterSpacing: 2, textTransform: "uppercase", padding: "0.75rem 1.5rem", background: "var(--color-primary)", color: "#fff", textDecoration: "none", display: "inline-block" }}>
+            Browse Products →
+          </a>
+        </div>
+      </Card3D>
+
     </div>
   );
 }

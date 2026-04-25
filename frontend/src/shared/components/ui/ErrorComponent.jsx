@@ -10,12 +10,11 @@ export default function ErrorComponent({
 
   return (
     <div style={styles.container}>
-      {/* Top Banner Section - Branded with Accent Color */}
       <div style={styles.banner}>
         <div style={styles.bannerContent}>
           <div style={styles.titleWrapper}>
-            <h1 style={styles.mainTitle}>SOMETHING</h1>
-            <h1 style={styles.mainTitle}>WENT WRONG . . .</h1>
+            <h1 style={styles.mainTitle}>{title.split(" ")[0]}</h1>
+            <h1 style={styles.mainTitle}>{title.split(" ").slice(1).join(" ") + " . . ."}</h1>
           </div>
           <img src={errorIllustration} alt="Error Illustration" style={styles.icon} />
         </div>

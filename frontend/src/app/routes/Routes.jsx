@@ -11,6 +11,8 @@ import { LoginPage, SignupPage } from "../../features/auth";
 
 import { DashboardPage, ProductsAdminPage } from "../../features/admin";
 
+import {ErrorComponent} from "../../shared";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,7 +28,8 @@ export const router = createBrowserRouter([
           { path: "/login", element: <LoginPage /> },
           { path: "/signup", element: <SignupPage /> },
           { path: "/profile", element: <ProfilePage /> },
-          { path: "about", element: <AboutPage />}
+          { path: "about", element: <AboutPage />},
+          { path: "*", element: <ErrorComponent type="NOT_FOUND" /> }
         ],
       },
       {

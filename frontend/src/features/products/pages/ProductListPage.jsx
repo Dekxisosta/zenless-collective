@@ -27,7 +27,7 @@ export default function ProductListPage() {
   if (loading) return <SkeletonGrid />;
 
   if (error) {
-    return <ErrorComponent detail={error} />;
+    return <ErrorComponent type="" />;
   }
 
   return (
