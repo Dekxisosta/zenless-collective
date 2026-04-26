@@ -1,5 +1,5 @@
 
-<img src="/assets/images/logo-dark.png" width="120px"/>
+<img src="/assets/images/logo-dark.png" width="260px"/>
 
 
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000000)
@@ -41,8 +41,11 @@ and clean UI composition with TailwindCSS and Lucide React.
 
 ---
 ![WebpageMockImage](/assets/images/hero-preview.png)
+---
 ![WebpageMockImage](/assets/images/dashboard-preview.png)
+---
 ![WebpageMockImage](/assets/images/signup-preview.png)
+---
 
 ## Contributors
 
