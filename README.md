@@ -1,5 +1,5 @@
 
-<img src="/assets/images/logo-dark.png" />
+<img src="/assets/images/logo-dark.png" width="120px"/>
 
 
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=000000)
@@ -40,8 +40,9 @@ API mocking with MSW during frontend development, server state management with T
 and clean UI composition with TailwindCSS and Lucide React.
 
 ---
-
-![WebpageMockImage](/assets/images/snapshot-dark.png)
+![WebpageMockImage](/assets/images/hero-preview.png)
+![WebpageMockImage](/assets/images/dashboard-preview.png)
+![WebpageMockImage](/assets/images/signup-preview.png)
 
 ## Contributors
 
