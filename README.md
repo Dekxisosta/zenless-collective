@@ -151,6 +151,8 @@ backend/
 └── vite.config.js              # Vite config for asset bundling
 ```
 
+## 📊 ERD - Database Design w/ Laravel Migrations
+![Entity Relationship Diagram](/assets/images/db-preview.png)
 ---
 
 ## Installation
