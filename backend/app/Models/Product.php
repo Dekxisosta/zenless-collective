@@ -8,26 +8,18 @@ class Product extends Model
 {
     // TODO: Finish the fillable function for products (exclude id)
     protected $fillable = [
-        'name', 
-        'description', 
+        'name',
+        'description',
         'price',
-        'discount',
-        'rating',
-        'reviews_count', 
-        'sold', 
-        'stock',
+        'discount_percent',
         'brand',
         'sku',
-        'weight',
-        'width',
-        'height',
-        'depth',
+        'size',
         'shipping_from',
         'shipping_fee',
-        'shipping_days',
-        'image',
-        'hover_image',
-        'pill',
+        'shipping_days_min',
+        'shipping_days_max',
+        'pill_id',
         'category_id'
     ];
 }

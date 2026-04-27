@@ -11,21 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100)->unique();
-            $table->string('slug', 120)->unique();
-            $table->text('image_url');
-            $table->string('description', 255);
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->text('url');
+            $table->boolean('is_primary')->default(false);
+            $table->boolean('is_hover')->default(false);
+            $table->integer('sort_order')->default(0)->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('product_images');
     }
 };

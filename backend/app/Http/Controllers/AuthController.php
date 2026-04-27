@@ -18,17 +18,17 @@ class AuthController extends Controller
             $request->validate([
                 'name' => 'required',
                 'email' => 'required|email|unique:users',
-                // TODO: Room for improvement on the password authentication -> limited to to JUST 8 characters
                 'password' => 'required|min:8',
             ]);
 
+            //* Code was adjusted in using UUID's laravel automatically generates an UUID per user.
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 //? bcrypt() Automatically hashes the password, a built in function
                 'password' => bcrypt($request->password)
             ]);
-            return response()->json(['message' => 'User registered successfully!!'], 200);
+            return response()->json(['message' => 'User registered successfully!!'], 201);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -39,7 +39,6 @@ class AuthController extends Controller
     //  Function (POST API) sends data to zelphyra_db, check for exitence then sents back the result
     public function login(Request $request)
     {
-        // TODO: Still need to set up middleware for protected routes so pages are consistent on user data credentials.
         try {
             //? attempt() is a built in function from the Auth class. Validates Credential + Logs in
             if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -54,14 +53,15 @@ class AuthController extends Controller
 
             return response()->json(['message' => 'User login successfully!!'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 401);
         }
     }
 
     public function logout(Request $request)
     {
         try {
-            Auth::logout();
+            Auth::guard('web')->logout();
+
             //* completely destroys session from db
             $request->session()->invalidate();
             //* Avoids getting -> Hacker has your CSRF token → you log out → hacker uses your old CSRF token to send fake requests → BAD!! 
@@ -72,7 +72,5 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
-
-        // TODO: Make a fall back for the log out api, currently logging out despite being 'logged out'
     }
 }

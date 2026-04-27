@@ -12,21 +12,31 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 
-//? Sets up the session system for API routes -> saves the session in the session db table
+    //? Middleware RUNS before the code, before controller, model, api calling etc...
+    //? Sets up the session system for API routes -> saves the session in the session db table
     ->withMiddleware(function (Middleware $middleware): void {
-    //? statefulApi() = enables cookie/session based auth for API routes (instead of stateless/JWT)
-    $middleware->statefulApi();
-    
-    //? prepend StartSession = starts the session FIRST before any other middleware runs
-    //? same concept as session_start() in vanilla PHP but automatic
-    $middleware->api(prepend: [
-        \Illuminate\Session\Middleware\StartSession::class,
-    ]);
-    
+        $middleware->redirectGuestsTo(fn() => null);
+
+        //? statefulApi() = enables cookie/session based auth for API routes (instead of stateless/JWT)
+        $middleware->statefulApi();
+
+        //? prepend StartSession = starts the session FIRST before any other middleware runs
+        //? same concept as session_start() in vanilla PHP but automatic
+        $middleware->api(prepend: [
+            \Illuminate\Session\Middleware\StartSession::class,
+        ]);
+
         //? skip CSRF token check for all /api/* routes (CSRF is for web forms, not APIs)
         //? Cross-Site Request Forgery -> hacker tricks user's browser to request on a website you already logged into.
-    //* $middleware->validateCsrfTokens(except: ['api/*']);
-})
+        $middleware->validateCsrfTokens(except: ['api/*']);
+    })
+    
+    //? 
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
-    })->create();
+    //? Handles auth errors 
+    $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+        return response()->json([
+            'message' => 'Unauthenticated.'
+        ], 401);
+    });
+})->create();
