@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+const VALID_SORTS = ["newest", "price_low", "price_high", "sold"];
+
 export function useProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  
+
   const [searchInput, setSearchInput] = useState(searchParams.get("search") || "");
 
-  const search = searchParams.get("search") || "";
+  const rawSort = searchParams.get("sort");
+  const search   = searchParams.get("search")   || "";
   const category = searchParams.get("category") || "all";
-  const sort = searchParams.get("sort") || "newest";
-  const page = Number(searchParams.get("page") || 1);
+  const sort     = VALID_SORTS.includes(rawSort) ? rawSort : "newest";
+  const page     = Number(searchParams.get("page") || 1);
 
   useEffect(() => {
     const t = setTimeout(() => {
       setSearchParams((prev) => {
         const params = new URLSearchParams(prev);
-
         if (searchInput !== (params.get("search") || "")) {
           if (searchInput) params.set("search", searchInput);
           else params.delete("search");
@@ -32,9 +34,7 @@ export function useProductFilters() {
       const params = new URLSearchParams(prev);
       if (!value || value === "all") params.delete(key);
       else params.set(key, value);
-      
       if (key !== "page") params.set("page", 1);
-      
       return params;
     });
   };

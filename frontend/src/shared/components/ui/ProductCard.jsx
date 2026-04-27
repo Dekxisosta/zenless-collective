@@ -1,5 +1,6 @@
-import { Star, ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import Pill from "./Pill.jsx";
 
 const slugify = (text) =>
@@ -21,7 +22,16 @@ const computePrice = (basePrice, discount) => {
   return { final: Math.round(basePrice * (1 - discount / 100) * 100) / 100, saved: discount };
 };
 
+const getStockStatus = (stock) => {
+  if (stock === 0)  return { label: "Sold out",       color: "var(--color-text-subtle)" }
+  if (stock <= 5)   return { label: `Last ${stock}!`, color: "var(--color-danger)" }
+  if (stock <= 20)  return { label: "Low stock",      color: "var(--color-warning)" }
+  return null
+}
+
 export default function Card({ product }) {
+  const [wished, setWished] = useState(false)
+
   const primaryImage = product.images?.find(img => img.is_primary)?.url ?? null
   const hoverImage   = product.images?.find(img => img.is_hover)?.url ?? null
   const stock        = product.inventory?.stock ?? 0
@@ -29,32 +39,32 @@ export default function Card({ product }) {
 
   const { final, saved } = computePrice(product.price, product.discount_percent)
   const isSoldOut = stock === 0
+  const stockStatus = getStockStatus(stock)
 
-  const resolvedPill = product.pill
-    ? product.pill
-    : saved
-    ? { variant: "discounted", label: `${saved}% Off` }
-    : null
+  const resolvedPill = product.pill ?? null
 
   return (
     <Link
       to={`/product/${slugify(product.name)}/${product.id}`}
-      className="group relative flex flex-col rounded-[16px] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg border bg-[var(--color-surface)]"
-      style={{ borderColor: "var(--color-border)" }}
+      className="group relative flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      style={{
+        borderRadius: "var(--radius)",
+        background: "var(--color-surface)",
+        border: "1px solid var(--color-border)",
+      }}
     >
-      {resolvedPill && (
-        <div className="absolute top-2 left-2 z-20">
-          <Pill {...resolvedPill} />
-        </div>
-      )}
 
-      <div className="relative aspect-square w-full overflow-hidden rounded-t-[10px] bg-gray-100">
+      {/* IMAGE */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{ aspectRatio: "1", background: "var(--color-bg-muted)" }}
+      >
         <img
           src={primaryImage}
           alt={product.name}
           loading="lazy"
           className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 ${
-            isSoldOut ? "grayscale opacity-50" : ""
+            isSoldOut ? "grayscale opacity-40" : ""
           }`}
         />
 
@@ -67,82 +77,196 @@ export default function Card({ product }) {
           />
         )}
 
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 60%)" }}
+        />
+
         {isSoldOut && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 backdrop-blur-[2px]">
-            <span className="bg-black/80 text-white px-3 py-1 rounded-[4px] text-[10px] font-bold tracking-tighter uppercase">
+            <span
+              className="px-3 py-1 text-xs font-bold tracking-tighter uppercase"
+              style={{
+                background: "var(--color-bg)",
+                color: "var(--color-text)",
+                borderRadius: "4px",
+              }}
+            >
               Out of Stock
+            </span>
+          </div>
+        )}
+
+        {/* MAIN PILL — top left */}
+        {resolvedPill && (
+          <div className="absolute top-2 left-0 z-20">
+            <Pill {...resolvedPill} />
+          </div>
+        )}
+
+        {/* STOCK STATUS — bottom of image */}
+        {stockStatus && !isSoldOut && (
+          <div
+            className="absolute bottom-0 left-0 right-0 z-20 flex items-center px-2.5 py-1.5"
+            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6), transparent)" }}
+          >
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wide"
+              style={{
+                color: "var(--hero-text)",
+                background: "rgba(255,255,255,0.15)",
+                backdropFilter: "blur(6px)",
+                border: "1px solid rgba(255,255,255,0.25)",
+                borderRadius: "5px",
+                padding: "3px 8px",
+              }}
+            >
+              <span style={{
+                width: "6px",
+                height: "6px",
+                borderRadius: "50%",
+                backgroundColor: stockStatus.color,
+                display: "inline-block",
+                flexShrink: 0,
+              }} />
+              {stockStatus.label}
             </span>
           </div>
         )}
       </div>
 
-      <div className="flex flex-col flex-1 p-3 gap-2">
-        <div className="flex items-center justify-between text-xs">
+      {/* CONTENT */}
+      <div
+        className="relative flex flex-col p-3 gap-2 overflow-hidden"
+        style={{
+          backgroundSize: "10px 10px",
+          backgroundPosition: "0 0, 0 5px, 5px -5px, -5px 0px",
+          backgroundColor: "var(--color-surface)",
+        }}
+      >
 
-          {/* No stars for now since reviews are not included in the MVP */}
-          {/* <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className="w-3 h-3"
+        {/* SELLER + CATEGORY */}
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-1.5">
+            <img
+              src="/images/seller-image.png"
+              alt="Seller"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid var(--color-primary)",
+              }}
+            />
+            <span
+              className="px-2 py-1 rounded-2xl text-xs font-semibold"
+              style={{
+                background: "var(--color-bg)",
+                color: "var(--color-text-muted)",
+              }}
+            >
+              Official Store
+            </span>
+          </div>
+          {product.category?.name && (
+            <span className="text-xs font-bold uppercase tracking-wide" style={{ color: "var(--color-primary)" }}>
+              {product.category.name}
+            </span>
+          )}
+          <div
+            style={{
+              borderRadius: "50%",
+              border: wished ? "2px solid var(--color-border)" : "none",
+            }}
+          >
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setWished(w => !w)
+              }}
+              className="flex items-center justify-center transition-all duration-200 active:scale-90"
+              style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
+            >
+              <Heart
+                className="w-4 h-4 m-2 transition-all duration-200"
                 style={{
-                  fill: i < Math.round(product.rating ?? 0) ? "#facc15" : "transparent",
-                  color: i < Math.round(product.rating ?? 0) ? "#facc15" : "var(--color-border)",
+                  fill: wished ? "#ec4899" : "transparent",
+                  color: wished ? "#ec4899" : "var(--color-text-muted)",
+                  transform: wished ? "scale(1.25)" : "scale(1)",
                 }}
               />
-            ))}
-            <span className="ml-1" style={{ color: "var(--color-text-muted)" }}>
-              {product.rating ?? "—"}
-            </span>
-          </div> */}
-          <span style={{ color: "var(--color-text-muted)" }}>
-            {formatSold(sold)} sold
-          </span>
+            </button>
+          </div>
         </div>
 
-        <h3 className="text-sm font-semibold leading-snug" style={{ color: "var(--color-text)" }}>
+        <h3 className="text-sm font-bold leading-snug relative z-10" style={{ color: "var(--color-text)" }}>
           <span className="block sm:hidden">{truncate(product.name, 22)}</span>
           <span className="hidden sm:block lg:hidden">{truncate(product.name, 30)}</span>
           <span className="hidden lg:block">{truncate(product.name, 26)}</span>
         </h3>
 
-        <div className="flex-1" />
+        {product.description && (
+          <p
+            className="text-xs leading-relaxed relative z-10 line-clamp-2 min-h-[2.5rem]"
+            style={{ color: "var(--color-text-muted)" }}
+          >
+            {product.description}
+          </p>
+        )}
 
+        {/* PRICE + ACTIONS */}
         <div
-          className="flex items-center justify-between pt-3"
+          className="flex items-center justify-between pt-2 relative z-10"
           style={{ borderTop: "1px solid var(--color-border)" }}
         >
-          <div className="flex flex-col">
-            <span className="text-base font-bold" style={{ color: "#ee4d2d" }}>
+          <div className="flex flex-col leading-none gap-0.5">
+            <span className="text-base font-bold" style={{ color: "var(--color-danger)" }}>
               ₱{final.toFixed(2)}
             </span>
             {saved && (
-              <span
-                className="text-xs line-through leading-none"
-                style={{ color: "var(--color-text-muted)" }}
-              >
+              <span className="text-xs line-through" style={{ color: "var(--color-text-muted)" }}>
                 ₱{product.price.toFixed(2)}
               </span>
             )}
           </div>
 
-          <button
-            disabled={isSoldOut}
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              if (isSoldOut) return
-            }}
-            className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-[10px] transition-all duration-200 active:scale-95 text-white ${
-              isSoldOut
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]"
-            }`}
-          >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            {isSoldOut ? "Sold" : "Add"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              disabled={isSoldOut}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (isSoldOut) return
+              }}
+              className={`flex items-center gap-1.5 text-xs font-bold transition-all duration-200 active:scale-95 ${
+                isSoldOut ? "cursor-not-allowed" : "hover:brightness-110"
+              }`}
+              style={{
+                background: isSoldOut ? "var(--color-text-subtle)" : "var(--color-primary)",
+                color: "var(--hero-text)",
+                clipPath: "polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)",
+                paddingTop: "7px",
+                paddingBottom: "7px",
+                paddingLeft: "16px",
+                paddingRight: "16px",
+                borderRadius: "var(--radius)",
+                boxShadow: isSoldOut
+                  ? "none"
+                  : "0 4px 12px color-mix(in srgb, var(--color-primary) 50%, transparent)",
+              }}
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              {isSoldOut ? "Sold" : "Add"}
+            </button>
+          </div>
         </div>
+
+        <span className="text-xs relative z-10" style={{ color: "var(--color-text-muted)" }}>
+          {formatSold(sold)} sold
+        </span>
+
       </div>
     </Link>
   )

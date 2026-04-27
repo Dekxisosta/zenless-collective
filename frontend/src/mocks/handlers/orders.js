@@ -26,7 +26,6 @@ export const orderHandlers = [
       payment: payments.find(p => p.order_id === order.id) ?? null,
     })
   }),
-
   // POST /api/orders
   http.post("/api/orders", async ({ request }) => {
     const body = await request.json()

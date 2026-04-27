@@ -2,7 +2,14 @@ import { useNavigate } from "react-router-dom";
 
 import { Chip, CategoryPills, Pagination } from "../components";
 import { useProducts, ProductCard, RetryComponent, EmptyComponent } from "../../../shared";
-import { useCategories, slugify, useProductFilters, ProductCardSkeleton} from "../../../shared";
+import { useCategories, slugify, useProductFilters, ProductCardSkeleton } from "../../../shared";
+
+const SORT_LABELS = {
+  newest:     "Newest",
+  price_low:  "Price ↑",
+  price_high: "Price ↓",
+  sold:       "Most Sold",
+};
 
 export default function ProductListPage() {
   const navigate = useNavigate();
@@ -63,10 +70,9 @@ export default function ProductListPage() {
             cursor: "pointer",
           }}
         >
-          <option value="newest">Newest</option>
-          <option value="rating">Best Rated</option>
-          <option value="price_low">Price ↑</option>
-          <option value="price_high">Price ↓</option>
+          {Object.entries(SORT_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
         </select>
       </div>
 
@@ -78,7 +84,7 @@ export default function ProductListPage() {
       />
 
       {/* ACTIVE CHIPS */}
-      {(search || category !== "all") && (
+      {(search || category !== "all" || sort !== "newest") && (
         <div className="flex gap-2 flex-wrap">
           {search && (
             <Chip
@@ -92,12 +98,18 @@ export default function ProductListPage() {
               onClear={() => updateFilter("category", "all")}
             />
           )}
+          {sort !== "newest" && (
+            <Chip
+              label={`Sort: ${SORT_LABELS[sort]}`}
+              onClear={() => updateFilter("sort", "newest")}
+            />
+          )}
         </div>
       )}
 
       {/* STATES */}
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}
@@ -111,9 +123,8 @@ export default function ProductListPage() {
         />
       ) : (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
             {products.map((product, index) => (
-              
               <ProductCard
                 key={product.id}
                 product={product}

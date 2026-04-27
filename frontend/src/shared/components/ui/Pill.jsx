@@ -1,78 +1,154 @@
 const VARIANTS = {
   exclusive: {
     label: "Shop Exclusive",
-    bg: "#831843",
-    color: "#fce7f3",
-    dot: "#db2777",
+    bg: "#be185d",
+    color: "#fff",
   },
   new: {
-    label: "New",
-    bg: "#1e3a8a",
-    color: "#dbeafe",
-    dot: "#93c5fd",
+    label: "New Arrival",
+    bg: "var(--color-primary)",
+    color: "#fff",
   },
   trending: {
     label: "Trending",
-    bg: "#7c2d12",
-    color: "#ffedd5",
-    dot: "#ea580c",
+    bg: "#ea580c",
+    color: "#fff",
   },
   discounted: {
     label: "Discounted",
-    bg: "#14532d",
-    color: "#dcfce7",
-    dot: "#16a34a",
+    bg: "#16a34a",
+    color: "#fff",
   },
   bestseller: {
     label: "Bestseller",
-    bg: "#713f12",
-    color: "#fef9c3",
-    dot: "#ca8a04",
+    bg: "#d97706",
+    color: "#fff",
   },
   sale: {
-    label: "Sale",
-    bg: "#7f1d1d",
-    color: "#fee2e2",
-    dot: "#dc2626",
+    label: "Sale Now!",
+    bg: "#dc2626",
+    color: "#fff",
   },
   limited: {
     label: "Limited",
-    bg: "#3b0764",
-    color: "#ede9fe",
-    dot: "#7c3aed",
+    bg: "#7c3aed",
+    color: "#fff",
   },
   hot: {
     label: "Hot",
-    bg: "#881337",
-    color: "#fce7f3",
-    dot: "#e11d48",
+    bg: "#e11d48",
+    color: "#fff",
   },
 };
 
-export default function Pill({
-  variant = "new",
-  label,
-  bg,
-  color,
-  dot,
-}) {
-  const base = VARIANTS[variant] ?? VARIANTS.new;
+export default function Pill({ label, bg, color }) {
+  const base = VARIANTS[label] ?? VARIANTS.new;
 
   const resolvedBg    = bg    ?? base.bg;
   const resolvedColor = color ?? base.color;
-  const resolvedDot   = dot   ?? base.dot;
   const resolvedLabel = (label ?? base.label).replace(/^\w/, c => c.toUpperCase());
 
   return (
-    <span
-      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
-      style={{ backgroundColor: resolvedBg, color: resolvedColor }}
-    >
+    <span className="inline-flex flex-col items-start" style={{ gap: "1px" }}>
+
+      {/* ZENLESS TAG */}
       <span
-        className="w-1.5 h-1.5 rounded-full"
-        style={{ backgroundColor: resolvedDot }}
-      />
-      {resolvedLabel}
+        className="inline-flex items-center font-bold tracking-widest"
+        style={{
+          fontSize: "7px",
+          color: resolvedBg === "var(--color-primary)" ? "var(--color-primary)" : resolvedBg,
+          backgroundColor: "rgba(255,255,255,0.15)",
+          backdropFilter: "blur(4px)",
+          border: `1px solid ${resolvedBg === "var(--color-primary)" ? "var(--color-primary)" : resolvedBg}`,
+          paddingLeft: "5px",
+          paddingRight: "5px",
+          paddingTop: "1px",
+          paddingBottom: "1px",
+          borderRadius: "3px",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          opacity: 0.85,
+        }}
+      >
+        ◆ zenless
+      </span>
+
+      {/* MAIN PILL + SLASH TAILS */}
+      <span className="inline-flex items-stretch" style={{ gap: "2px" }}>
+
+        {/* MAIN PILL */}
+        <span
+          className="inline-flex items-center text-xs font-bold relative overflow-hidden"
+          style={{
+            backgroundColor: resolvedBg,
+            color: resolvedColor,
+            clipPath: "polygon(0% 0%, 100% %, 100% 100%, 0% 100%)",
+            paddingTop: "4px",
+            paddingBottom: "4px",
+            paddingLeft: "44px",
+            paddingRight: "16px",
+            lineHeight: 1,
+            minHeight: "28px",
+          }}
+        >
+          {/* MASCOT */}
+          <img
+            src="/images/mascot-icon.webp"
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: "-2px",
+              bottom: "0px",
+              width: "40px",
+              height: "40px",
+              objectFit: "contain",
+              flexShrink: 0,
+            }}
+          />
+
+          {/* HATCHES */}
+          <span
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 right-0 pointer-events-none"
+            style={{
+              height: "5px",
+              backgroundImage: `repeating-linear-gradient(
+                90deg,
+                rgb(255,255,255) 0px,
+                rgba(255,255,255,0.49) 4px,
+                transparent 4px,
+                transparent 8px
+              )`,
+            }}
+          />
+
+          {resolvedLabel}
+        </span>
+
+        {/* SLASH 1 */}
+        <span
+          style={{
+            display: "inline-block",
+            width: "6px",
+            backgroundColor: resolvedBg,
+            opacity: 0.6,
+            clipPath: "polygon(0% 0%, 100% 0%, 94% 100%, 0% 100%)",
+          }}
+        />
+
+        {/* SLASH 2 */}
+        <span
+          style={{
+            display: "inline-block",
+            width: "6px",
+            backgroundColor: resolvedBg,
+            opacity: 0.3,
+            clipPath: "polygon(0% 0%, 100% 0%, 94% 100%, 0% 100%)",
+          }}
+        />
+
+      </span>
     </span>
   );
 }

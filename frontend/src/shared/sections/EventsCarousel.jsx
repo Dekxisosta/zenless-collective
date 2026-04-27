@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import events from "../../test/events.json";
+import events from "../../data/events.json";
 import EventCard from "../components/ui/EventCard";
 
 export default function EventsCarousel() {

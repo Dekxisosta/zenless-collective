@@ -33,16 +33,16 @@ export default function Hero() {
 
           <h1
             className="text-5xl md:text-6xl font-bold leading-tight"
-            style={{ color: "var(--color-text)" }}
+            style={{ color: "var(--hero-text)" }}
           >
             Curated Finds for
             <br />
-            <span style={{ color: "var(--color-primary)" }}>Every Lifestyle</span>
+            <span style={{ color: "var(--hero-primary)" }}>Every Lifestyle</span>
           </h1>
 
           <p
             className="mt-5 text-lg"
-            style={{ color: "var(--color-text-muted)" }}
+            style={{ color: "var(--color-text-subtle)" }}
           >
             Books, manga, tech, and lifestyle essentials — all in one curated space.
           </p>
@@ -50,13 +50,14 @@ export default function Hero() {
           <div className="flex gap-4 mt-8">
             <Link
               to="/products"
-              className="px-6 py-3 font-semibold text-white transition"
+              className="px-6 py-3 font-semibold transition"
               style={{
-                backgroundColor: "var(--color-primary)",
+                background: "var(--hero-primary)",
+                color: "var(--hero-text)",
                 borderRadius: "var(--radius)",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "var(--color-primary-hover)"}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "var(--color-primary)"}
+              onMouseEnter={(e) => e.currentTarget.style.background = "var(--color-primary-hover)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "var(--hero-primary)"}
             >
               Shop Now
             </Link>
@@ -65,13 +66,13 @@ export default function Hero() {
               to="/about"
               className="px-6 py-3 font-semibold transition"
               style={{
-                color: "var(--color-text)",
-                background: "rgba(0, 0, 0, 0.08)",
-                border: "1px solid var(--color-border)",
+                color: "var(--hero-text)",
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.2)",
                 borderRadius: "var(--radius)",
               }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.81)"}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "rgba(0,0,0,0.08)"}
+              onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.15)"}
+              onMouseLeave={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
             >
               About the collective →
             </Link>

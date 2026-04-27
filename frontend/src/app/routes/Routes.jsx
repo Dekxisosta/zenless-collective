@@ -3,7 +3,7 @@ import App from "../../App";
 
 import AdminGuard from "../guards/AdminGuard";
 
-import { AuthProvider, useAuth, LoginPage, SignupPage } from "../../features/auth";
+import { LoginPage, SignupPage } from "../../features/auth";
 import { UserLayout, AdminLayout } from "../layouts";
 import { Home } from "../../pages";
 import { ProductDetailPage, ProductListPage } from "../../features/products";
@@ -23,60 +23,57 @@ import {
   CustomersPage, OrderHistoryPage
 } from "../../features/admin";
 
-import { ErrorComponent } from "../../shared";
-import { ThemeProvider } from "../../features/theme";
-
-import { Background } from "../../shared";
+import { ErrorComponent, Background } from "../../shared";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ThemeProvider>
-        <AuthProvider>
-          <Background />
-          <App />
-        </AuthProvider>
-      </ThemeProvider>
+      <>
+        <Background />
+        <App />
+      </>
     ),
     errorElement: <ErrorComponent type="DEFAULT" />,
     children: [
       {
         element: <UserLayout />,
         children: [
-          { index: true, element: <Home /> },
-          { path: "products", element: <ProductListPage /> },
-          { path: "product/:slug/:id", element: <ProductDetailPage /> },
-          { path: "cart", element: <CartPage /> },
-          { path: "login", element: <LoginPage /> },
-          { path: "signup", element: <SignupPage /> },
-          { path: "profile", element: <ProfilePage /> },
-          { path: "about", element: <AboutPage />},
-          { path: "contact", element: <ContactPage />},
-
-          { path: "faq", element: <FAQPage /> },
-          { path: "shipping", element: <Shipping /> },
-          { path: "returns", element: <Returns /> },
-
-          { path: "privacy-policy", element: <DataPolicy /> },
-          { path: "terms-of-service", element: <TermsOfService /> },
-
-          { path: "*", element: <ErrorComponent type="NOT_FOUND" /> }
+          { index: true,                       element: <Home /> },
+          { path: "products",                  element: <ProductListPage /> },
+          { path: "product/:slug/:id",         element: <ProductDetailPage /> },
+          { path: "cart",                      element: <CartPage /> },
+          { path: "login",                     element: <LoginPage /> },
+          { path: "signup",                    element: <SignupPage /> },
+          { path: "profile",                   element: <ProfilePage /> },
+          { path: "about",                     element: <AboutPage /> },
+          { path: "contact",                   element: <ContactPage /> },
+          { path: "faq",                       element: <FAQPage /> },
+          { path: "shipping",                  element: <Shipping /> },
+          { path: "returns",                   element: <Returns /> },
+          { path: "privacy-policy",            element: <DataPolicy /> },
+          { path: "terms-of-service",          element: <TermsOfService /> },
+          { path: "*",                         element: <ErrorComponent type="NOT_FOUND" /> },
         ],
       },
       {
         path: "admin",
-        element: <AdminLayout />,
+        element: <AdminGuard />,
         errorElement: <ErrorComponent type="DEFAULT" />,
         children: [
-          { index: true,              element: <DashboardPage /> },
-          { path: "products",         element: <ProductsAdminPage /> },
-          { path: "inventory",        element: <InventoryPage /> },
-          { path: "orders",           element: <OrdersPage /> },
-          { path: "payments",         element: <PaymentsPage /> },
-          { path: "reports",          element: <SalesReportsPage /> },
-          { path: "customers",        element: <CustomersPage /> },
-          { path: "order-history",    element: <OrderHistoryPage /> },
+          {
+            element: <AdminLayout />,
+            children: [
+              { index: true,           element: <DashboardPage /> },
+              { path: "products",      element: <ProductsAdminPage /> },
+              { path: "inventory",     element: <InventoryPage /> },
+              { path: "orders",        element: <OrdersPage /> },
+              { path: "payments",      element: <PaymentsPage /> },
+              { path: "reports",       element: <SalesReportsPage /> },
+              { path: "customers",     element: <CustomersPage /> },
+              { path: "order-history", element: <OrderHistoryPage /> },
+            ],
+          },
         ],
       },
     ],
