@@ -3,7 +3,9 @@ import React from "react";
 import { RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { router } from "./app/routes/Routes.jsx";
+import { ProfileProvider } from "./features/profile/context/ProfileContext";
 import { ThemeProvider } from "./features/theme";
+import { AuthProvider } from "./features/auth";
 
 import "./stylesheets/index.css";
 
@@ -24,7 +26,11 @@ enableMocking().then(() => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <AuthProvider>
+            <ProfileProvider>
+              <RouterProvider router={router} />
+            </ProfileProvider>
+          </AuthProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </React.StrictMode>

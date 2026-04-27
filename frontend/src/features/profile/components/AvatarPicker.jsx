@@ -8,7 +8,7 @@ export default function AvatarPicker({ currentAvatarId, onSelect, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-50 flex items-start justify-center"
       style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
       onClick={onClose}
     >
@@ -59,7 +59,7 @@ export default function AvatarPicker({ currentAvatarId, onSelect, onClose }) {
         )}
 
         {/* GRID */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-4 gap-3">
           {avatars.map(avatar => {
             const isSelected = avatar.id === selected
             return (

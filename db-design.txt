@@ -244,3 +244,20 @@ CREATE TABLE payments (
     -- transaction_ref stores the gateway reference for reconciliation.
     -- paid_at is NULL until payment is confirmed.
 );
+
+-- =========================
+-- USER IMAGES
+-- =========================
+CREATE TABLE user_images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id UUID UNIQUE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    avatar_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    -- DESIGN DECISION:
+    -- One avatar per user enforced by UNIQUE on user_id.
+    -- avatar_id references a fixed set of preset avatars (not a FK),
+    -- keeping avatar management on the frontend without a separate table.
+    -- updated_at tracked to support avatar change history if needed later.
+);

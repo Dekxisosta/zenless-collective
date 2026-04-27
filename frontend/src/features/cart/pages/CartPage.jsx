@@ -8,9 +8,9 @@ export default function CartPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!profileLoading && !profile) {
-      navigate("/login");
-    }
+    // if (!profileLoading && !profile) {
+    //   navigate("/login");
+    // }
   }, [profileLoading, profile, navigate]);
 
   if (loading || profileLoading) {
@@ -21,7 +21,7 @@ export default function CartPage() {
     );
   }
 
-  if (!profile) return null;
+  // if (!profile) return null;
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 

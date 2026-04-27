@@ -1,21 +1,32 @@
-import { useState } from "react"
+// features/profile/sections/ProfileSection.jsx
+import { useState, useEffect } from "react"
 import { Field, SaveButton } from "../components/ProfileUI"
 
-export default function ProfileSection({ user }) {
-  const [form, setForm] = useState({ name: user?.name ?? "", email: user?.email ?? "", phone: "" })
+export default function ProfileSection({ profile, onUpdate }) {
+  const [form, setForm] = useState({
+    name:  profile?.name  ?? "",
+    email: profile?.email ?? "",
+    phone: profile?.phone ?? "",
+  })
   const [status, setStatus] = useState(null)
+
+  // sync fields when profile loads
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        name:  profile.name  ?? "",
+        email: profile.email ?? "",
+        phone: profile.phone ?? "",
+      })
+    }
+  }, [profile])
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
 
   const handleSubmit = async () => {
     setStatus("saving")
     try {
-      const res = await fetch("/api/users/me", {
-        method: "PATCH", credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      })
-      if (!res.ok) throw new Error()
+      await onUpdate(form)
       setStatus("saved")
       setTimeout(() => setStatus(null), 2500)
     } catch {

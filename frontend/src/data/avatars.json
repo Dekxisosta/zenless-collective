@@ -1,11 +1,18 @@
 [
-  { "id": 1, "url": "/avatars/anby-avatar.png",   "label": "Anby" },
-  { "id": 2, "url": "/avatars/ben-avatar.png",    "label": "Ben" },
-  { "id": 3, "url": "/avatars/corin-avatar.png",  "label": "Corin" },
-  { "id": 4, "url": "/avatars/ellen-avatar.png",  "label": "Ellen" },
-  { "id": 5, "url": "/avatars/jane-avatar.png",   "label": "Jane" },
-  { "id": 6, "url": "/avatars/lycaon-avatar.png", "label": "Lycaon" },
-  { "id": 7, "url": "/avatars/nicole-avatar.png", "label": "Nicole" },
-  { "id": 8, "url": "/avatars/qingyi-avatar.png", "label": "Qingyi" },
-  { "id": 9, "url": "/avatars/rina-avatar.png",   "label": "Rina" }
+  { "id": 1,  "url": "/avatars/anby-avatar.png",      "label": "Anby" },
+  { "id": 2,  "url": "/avatars/ben-avatar.png",       "label": "Ben" },
+  { "id": 3,  "url": "/avatars/corin-avatar.png",     "label": "Corin" },
+  { "id": 4,  "url": "/avatars/ellen-avatar.png",     "label": "Ellen" },
+  { "id": 5,  "url": "/avatars/jane-avatar.png",      "label": "Jane" },
+  { "id": 6,  "url": "/avatars/lycaon-avatar.png",    "label": "Lycaon" },
+  { "id": 7,  "url": "/avatars/nicole-avatar.png",    "label": "Nicole" },
+  { "id": 8,  "url": "/avatars/qingyi-avatar.png",    "label": "Qingyi" },
+  { "id": 9,  "url": "/avatars/rina-avatar.png",      "label": "Rina" },
+  { "id": 10, "url": "/avatars/soldier11-avatar.png", "label": "Soldier 11" },
+  { "id": 11, "url": "/avatars/soukaku-avatar.png",   "label": "Soukaku" },
+  { "id": 12, "url": "/avatars/burnice-avatar.png",   "label": "Burnice" },
+  { "id": 13, "url": "/avatars/lucy-avatar.png",      "label": "Lucy" },
+  { "id": 14, "url": "/avatars/piper-avatar.png",     "label": "Piper" },
+  { "id": 15, "url": "/avatars/caesar-avatar.png",    "label": "Caesar" },
+  { "id": 16, "url": "/avatars/zhuyuan-avatar.png",   "label": "Zhu Yuan" }
 ]

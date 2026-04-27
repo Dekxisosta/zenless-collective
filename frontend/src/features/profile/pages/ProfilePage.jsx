@@ -1,14 +1,42 @@
 import { useState } from "react";
 import { useAuth } from "../../auth";
-import {AvatarPicker, Section} from "../components";
-import {ProfileSection, AddressSection, SecuritySection} from "../sections/";
+import { AvatarPicker, Section } from "../components";
+import { ProfileSection, AddressSection, SecuritySection } from "../sections";
+import { useProfile } from "../context";
+import { RetryComponent } from "../../../shared";
 import avatars from "../../../data/avatars.json";
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  const { user }      = useAuth()
   const [pickerOpen, setPickerOpen] = useState(false)
-  const [avatarId, setAvatarId] = useState(1)
+
+  const {
+    profile, addresses, loading, error, refetch,
+    updateProfile, updateAvatar,
+    updatePassword,
+    addAddress, updateAddress, deleteAddress,
+  } = useProfile()
+
+  const avatarId      = profile?.avatar_id ?? 1
   const currentAvatar = avatars.find(a => a.id === avatarId)
+
+  const handleSelectAvatar = async (id) => {
+    try {
+      await updateAvatar(id)
+    } catch {}
+  }
+
+  if (loading) return (
+    <div style={{ minHeight: "100vh", padding: "2.5rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem" }}>Loading profile…</p>
+    </div>
+  )
+
+  if (error) return (
+    <div style={{ minHeight: "100vh", padding: "2.5rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <RetryComponent errorType="FETCH_ERROR" onRetry={refetch} />
+    </div>
+  )
 
   return (
     <div style={{ minHeight: "100vh", padding: "2.5rem 1.5rem" }}>
@@ -33,24 +61,29 @@ export default function ProfilePage() {
           </div>
           <div>
             <h1 style={{ color: "var(--color-text)", fontWeight: 800, fontSize: "1.25rem" }}>
-              {user?.name ?? "Guest"}
+              {profile?.name ?? user?.name ?? "Guest"}
             </h1>
             <p style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>
-              {user?.email ?? "—"}
+              {profile?.email ?? user?.email ?? "—"}
             </p>
           </div>
         </div>
 
         <Section title="Personal Information">
-          <ProfileSection user={user} />
+          <ProfileSection profile={profile} onUpdate={updateProfile} />
         </Section>
 
         <Section title="Saved Addresses">
-          <AddressSection />
+          <AddressSection
+            addresses={addresses}
+            onAdd={addAddress}
+            onUpdate={updateAddress}
+            onDelete={deleteAddress}
+          />
         </Section>
 
         <Section title="Security">
-          <SecuritySection />
+          <SecuritySection onUpdatePassword={updatePassword} />
         </Section>
 
       </div>
@@ -58,7 +91,10 @@ export default function ProfilePage() {
       {pickerOpen && (
         <AvatarPicker
           currentAvatarId={avatarId}
-          onSelect={(id) => setAvatarId(id)}
+          onSelect={async (id) => {
+            await handleSelectAvatar(id)
+            setPickerOpen(false)
+          }}
           onClose={() => setPickerOpen(false)}
         />
       )}
