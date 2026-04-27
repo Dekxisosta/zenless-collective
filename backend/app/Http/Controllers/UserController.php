@@ -13,7 +13,7 @@ class UserController extends Controller
         try{
             //? gets the current user -> built-in  (a copy of user not the Eloquent model)
             $user = Auth::user();
-
+    
             //? passes the user
             return response()->json(['message' => 'Profile retrieve successfully.', 'user' => $user], 200);
         }catch(\Exception $e){

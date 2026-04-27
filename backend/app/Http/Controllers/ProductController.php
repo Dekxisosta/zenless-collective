@@ -8,12 +8,25 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $products = Product::all();
+            //? Prepares a query statement to pass to the Product table 
+            $query = Product::query();
             
-            return response()->json(['message' => 'Products successfully retrieved.', 'products' => $products], 200);
+            //? check the request model if its exactly with the category_id
+            if($request->category_id){
+                $query->where('category_id', $request->category_id);
+            }
+             //? check the request model if its exactly with the pill
+            if($request->pill){
+                $query->where('pill', $request->pill);
+            }
+
+             //? gets the products an insert into array of products
+            $product = $query->get();
+
+            return response()->json(['message' => 'Successfully retrieved product/s', 'product' => $product], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -27,4 +40,5 @@ class ProductController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
 }
