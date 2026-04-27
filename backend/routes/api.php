@@ -47,12 +47,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //* -------- Cart Item Api --------    
     Route::post('/cart/items', [CartItemController::class, 'store']);
-    Route::patch('/cart/items', [CartItemController::class, 'update']);
-    Route::delete('/cart/items', [CartItemController::class, 'destroy']);
+    Route::patch('/cart/items/{id}', [CartItemController::class, 'update']);
+    Route::delete('/cart/items/{id}', [CartItemController::class, 'destroy']);
 
     //* -------- Order  Api --------    
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+    //! Order Api IS NOT DONE YET
 
     //TODO: Pages that needs to be here payment, checkout
 });
@@ -73,4 +75,6 @@ Route::get('categories', [CategoryController::class, 'index']);
 Route::get('categories/{id}', [CategoryController::class, 'show']);
 
 //* ---------------------------------------------------------- 
+
+// TODO: Need to set up the Admin Side 
 
