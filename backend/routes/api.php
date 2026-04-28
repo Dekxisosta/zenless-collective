@@ -23,6 +23,12 @@ use App\Http\Controllers\OrderItemController;
 
 use App\Http\Controllers\PaymentController;
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminInventoryController;
+use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\AdminPaymentController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,7 +60,8 @@ Route::get('/pills', [PillController::class, 'index']);
 
 //? Checks for user end if logged in or not != blocked by the system 
 Route::middleware('auth:sanctum')->group(function () {
-    //* ALL PROTECTED ROUTES HERE 
+    //* ALL PROTECTED ROUTES HERE ]
+
     //* -------- Auth & User Api --------  
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [UserController::class, 'getProfile']);
@@ -103,6 +110,27 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/payments', [PaymentController::class, 'store']);
     Route::get('/payments/{orderId}', [PaymentController::class, 'show']);
     Route::patch('/payments/{id}/status', [PaymentController::class, 'updateStatus']);
+
+    //* -------- ADMIN ROUTES --------
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index']);
+        
+        Route::get('/products', [AdminProductController::class, 'index']);
+        Route::post('/products', [AdminProductController::class, 'store']);
+        Route::put('/products/{id}', [AdminProductController::class, 'update']);
+        Route::delete('/products/{id}', [AdminProductController::class, 'destroy']);
+
+        Route::get('/inventory', [AdminInventoryController::class, 'index']);
+        Route::patch('/inventory/{productId}', [AdminInventoryController::class, 'update']);
+
+        Route::get('/payments', [AdminPaymentController::class, 'index']);
+        Route::get('/payments/{id}', [AdminPaymentController::class, 'show']);
+
+        Route::get('/customers', [AdminCustomerController::class, 'index']);
+        Route::delete('/customers/{id}', [AdminCustomerController::class, 'destroy']);
+        Route::get('/customers/{id}/cart', [AdminCustomerController::class, 'cart']);
+        Route::get('/customers/{id}/orders', [AdminCustomerController::class, 'orders']);
+    });
 });
 
 //* ------------------------------------------------------------
