@@ -2,27 +2,27 @@
   {
     "id": 1,
     "order_id": 1,
-    "amount": 898.00,
+    "amount": 1264.0,
     "method": "gcash",
     "status": "completed",
     "transaction_ref": "GCX-20250310-00001",
-    "paid_at": "2025-03-10T10:05:00Z",
+    "paid_at": "2025-03-10T10:03:00Z",
     "created_at": "2025-03-10T10:00:00Z"
   },
   {
     "id": 2,
     "order_id": 2,
-    "amount": 4995.00,
+    "amount": 4745.25,
     "method": "card",
     "status": "completed",
     "transaction_ref": "CARD-20250318-00002",
-    "paid_at": "2025-03-18T14:32:00Z",
+    "paid_at": "2025-03-18T14:33:00Z",
     "created_at": "2025-03-18T14:30:00Z"
   },
   {
     "id": 3,
     "order_id": 3,
-    "amount": 1349.00,
+    "amount": 1150.0,
     "method": "cod",
     "status": "pending",
     "transaction_ref": null,
@@ -32,11 +32,211 @@
   {
     "id": 4,
     "order_id": 4,
-    "amount": 899.00,
+    "amount": 899.0,
     "method": "gcash",
     "status": "completed",
     "transaction_ref": "GCX-20250405-00004",
     "paid_at": "2025-04-05T11:03:00Z",
     "created_at": "2025-04-05T11:00:00Z"
+  },
+  {
+    "id": 5,
+    "order_id": 5,
+    "amount": 1548.0,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250312-00005",
+    "paid_at": "2025-03-12T08:23:00Z",
+    "created_at": "2025-03-12T08:20:00Z"
+  },
+  {
+    "id": 6,
+    "order_id": 6,
+    "amount": 765.0,
+    "method": "gcash",
+    "status": "cancelled",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-03-20T16:00:00Z"
+  },
+  {
+    "id": 7,
+    "order_id": 7,
+    "amount": 297.5,
+    "method": "paypal",
+    "status": "completed",
+    "transaction_ref": "PYPL-20250322-00007",
+    "paid_at": "2025-03-22T13:18:00Z",
+    "created_at": "2025-03-22T13:15:00Z"
+  },
+  {
+    "id": 8,
+    "order_id": 8,
+    "amount": 1599.0,
+    "method": "cod",
+    "status": "completed",
+    "transaction_ref": "COD-20250328-00008",
+    "paid_at": "2025-03-28T11:00:00Z",
+    "created_at": "2025-03-28T10:30:00Z"
+  },
+  {
+    "id": 9,
+    "order_id": 9,
+    "amount": 4745.25,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250330-00009",
+    "paid_at": "2025-03-30T09:03:00Z",
+    "created_at": "2025-03-30T09:00:00Z"
+  },
+  {
+    "id": 10,
+    "order_id": 10,
+    "amount": 350.0,
+    "method": "card",
+    "status": "pending",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-04-06T14:00:00Z"
+  },
+  {
+    "id": 11,
+    "order_id": 11,
+    "amount": 1845.0,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250407-00011",
+    "paid_at": "2025-04-07T09:33:00Z",
+    "created_at": "2025-04-07T09:30:00Z"
+  },
+  {
+    "id": 12,
+    "order_id": 12,
+    "amount": 1276.5,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250402-00012",
+    "paid_at": "2025-04-02T11:48:00Z",
+    "created_at": "2025-04-02T11:45:00Z"
+  },
+  {
+    "id": 13,
+    "order_id": 13,
+    "amount": 700.0,
+    "method": "cod",
+    "status": "cancelled",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-03-15T07:00:00Z"
+  },
+  {
+    "id": 14,
+    "order_id": 14,
+    "amount": 1450.0,
+    "method": "paypal",
+    "status": "completed",
+    "transaction_ref": "PYPL-20250404-00014",
+    "paid_at": "2025-04-04T15:23:00Z",
+    "created_at": "2025-04-04T15:20:00Z"
+  },
+  {
+    "id": 15,
+    "order_id": 15,
+    "amount": 4745.25,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250325-00015",
+    "paid_at": "2025-03-25T12:03:00Z",
+    "created_at": "2025-03-25T12:00:00Z"
+  },
+  {
+    "id": 16,
+    "order_id": 16,
+    "amount": 499.0,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250408-00016",
+    "paid_at": "2025-04-08T10:13:00Z",
+    "created_at": "2025-04-08T10:10:00Z"
+  },
+  {
+    "id": 17,
+    "order_id": 17,
+    "amount": 13007.5,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250308-00017",
+    "paid_at": "2025-03-08T08:48:00Z",
+    "created_at": "2025-03-08T08:45:00Z"
+  },
+  {
+    "id": 18,
+    "order_id": 18,
+    "amount": 899.0,
+    "method": "gcash",
+    "status": "pending",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-04-09T16:30:00Z"
+  },
+  {
+    "id": 19,
+    "order_id": 19,
+    "amount": 1498.0,
+    "method": "cod",
+    "status": "completed",
+    "transaction_ref": "COD-20250403-00019",
+    "paid_at": "2025-04-03T13:30:00Z",
+    "created_at": "2025-04-03T13:00:00Z"
+  },
+  {
+    "id": 20,
+    "order_id": 20,
+    "amount": 700.0,
+    "method": "paypal",
+    "status": "completed",
+    "transaction_ref": "PYPL-20250305-00020",
+    "paid_at": "2025-03-05T09:18:00Z",
+    "created_at": "2025-03-05T09:15:00Z"
+  },
+  {
+    "id": 21,
+    "order_id": 21,
+    "amount": 4095.0,
+    "method": "gcash",
+    "status": "cancelled",
+    "transaction_ref": null,
+    "paid_at": null,
+    "created_at": "2025-03-17T11:30:00Z"
+  },
+  {
+    "id": 22,
+    "order_id": 22,
+    "amount": 760.0,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250410-00022",
+    "paid_at": "2025-04-10T08:03:00Z",
+    "created_at": "2025-04-10T08:00:00Z"
+  },
+  {
+    "id": 23,
+    "order_id": 23,
+    "amount": 1350.0,
+    "method": "gcash",
+    "status": "completed",
+    "transaction_ref": "GCX-20250314-00023",
+    "paid_at": "2025-03-14T14:03:00Z",
+    "created_at": "2025-03-14T14:00:00Z"
+  },
+  {
+    "id": 24,
+    "order_id": 24,
+    "amount": 998.0,
+    "method": "card",
+    "status": "completed",
+    "transaction_ref": "CARD-20250405-00024",
+    "paid_at": "2025-04-05T17:03:00Z",
+    "created_at": "2025-04-05T17:00:00Z"
   }
 ]

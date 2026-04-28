@@ -7,6 +7,8 @@ import AdminStatusPill from "../components/ui/AdminStatusPill"
 const formatPHP = (val) =>
   new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP" }).format(val)
 
+
+
 function MetricCard({ label, value, valueClass = "text-[var(--color-text)]", sub }) {
   return (
     <div className="p-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm flex flex-col gap-1">
@@ -35,7 +37,7 @@ export default function SalesReportsPage() {
   // Convert revenueByMonth object to chart-friendly array
   const monthlyChartData = useMemo(() => {
     if (!reports?.revenueByMonth) return []
-    return Object.entries(reports.revenueByMonth).map(([date, sold]) => ({ date, sold }))
+    return Object.entries(reports.revenueByMonth).map(([date, revenue]) => ({ date, revenue }))
   }, [reports])
 
   if (loading) return (

@@ -31,7 +31,7 @@ export default function RecentOrdersTable({ orders }) {
               <Td muted>{order.items.length} item{order.items.length !== 1 ? "s" : ""}</Td>
               <Td><AdminStatusPill status={order.payment?.status ?? "pending"} /></Td>
               <Td><AdminStatusPill status={order.status} /></Td>
-              <Td right>{currency(order.total_amount)}</Td>
+              <Td right>{currency(order.total)}</Td>
               <Td muted>
                 {new Date(order.created_at).toLocaleDateString("en-PH", {
                   month: "short", day: "numeric", year: "numeric"

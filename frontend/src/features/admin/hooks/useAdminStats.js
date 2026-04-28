@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react"
 
 export function useAdminStats() {
-  const [stats, setStats]     = useState(null)
+  const [stats, setStats] = useState({
+    totalRevenue:     0,
+    totalOrders:      0,
+    totalCustomers:   0,
+    pendingOrders:    0,
+    recentOrders:     [],
+    topProducts:      [],
+    paymentBreakdown: [],
+  })
   const [loading, setLoading] = useState(true)
   const [error, setError]     = useState(null)
 

@@ -16,11 +16,15 @@ export const statsHandlers = [
     const recentOrders = [...orders]
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .slice(0, 5)
-      .map(o => ({
-        ...o,
-        items:   order_items.filter(i => i.order_id === o.id),
-        payment: payments.find(p => p.order_id === o.id) ?? null,
-      }))
+      .map(o => {
+        const items = order_items.filter(i => i.order_id === o.id)
+        return {
+          ...o,
+          items,
+          total:   items.reduce((s, i) => s + i.subtotal, 0),
+          payment: payments.find(p => p.order_id === o.id) ?? null,
+        }
+      })
 
     const topProducts = products
       .map(p => ({ ...p, inventory: product_inventory.find(i => i.product_id === p.id) }))

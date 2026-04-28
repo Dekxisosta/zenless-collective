@@ -71,7 +71,6 @@ export function useCheckout() {
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          total_amount:     total,
           payment_method:   form.payment_method,
           status:           "pending",
           shipping_name:    form.shipping_name,
@@ -91,14 +90,13 @@ export function useCheckout() {
       const newOrder = await orderRes.json();
       setOrder(newOrder);
 
-      // 2. Create payment
       const paymentRes = await fetch("/api/payments", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           order_id: newOrder.id,
-          amount:   total,
+          amount:   newOrder.total,
           method:   form.payment_method,
         }),
       });

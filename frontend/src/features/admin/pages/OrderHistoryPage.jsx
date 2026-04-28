@@ -100,7 +100,7 @@ export default function OrderHistoryPage() {
                         {order.items?.length ?? 0} item{(order.items?.length ?? 0) !== 1 ? "s" : ""}
                       </td>
                       <td style={{ padding: "0.65rem 1rem", color: "#10b981", fontWeight: 700, fontSize: "0.85rem" }}>
-                        {formatPHP(order.total_amount)}
+                        {formatPHP(order.total)}
                       </td>
                       <td style={{ padding: "0.65rem 1rem" }}>
                         <span style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
