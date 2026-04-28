@@ -10,6 +10,24 @@ export function AuthProvider({ children }) {
     verify();
   }, []);
 
+  const register = async (name, email, password) => {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || "Registration failed");
+    }
+
+    const data = await res.json();
+    setUser(data.user);
+    return data;
+  };
+
   const verify = async () => {
     try {
       const res = await fetch("/api/auth/me", {
@@ -57,8 +75,8 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, verify }}>
-      {children}
+    <AuthContext.Provider value={{ user, loading, login, logout, verify, register }}>
+      {loading ? null : children}
     </AuthContext.Provider>
   );
 }

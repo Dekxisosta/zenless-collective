@@ -37,6 +37,7 @@ function CartItem({ item, onChangeQty, onRemove }) {
   const stockStatus  = getStockStatus(stock);
   const { final, saved } = computePrice(product.price, product.discount_percent);
   const resolvedPill = product.pill ?? null;
+  
 
   return (
     <div
@@ -260,12 +261,14 @@ export default function CartPage() {
   const { profile, loading: profileLoading } = useProfile();
   const { cart, loading, removeItem, changeQty, subtotal } = useCart();
   const navigate = useNavigate();
+  const isAdmin = profile?.role === "admin";
+
+  
 
   useEffect(() => {
-    if (!profileLoading && !profile) {
-      navigate("/login");
-    }
-  }, [profileLoading, profile, navigate]);
+    if (!profileLoading && !profile) navigate("/login");
+    if (!profileLoading && isAdmin) navigate("/");
+  }, [profileLoading, profile, isAdmin, navigate]);
 
   if (loading || profileLoading) {
     return (

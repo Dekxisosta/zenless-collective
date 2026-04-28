@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react"
-
 import { useAuth } from "../../auth"
 
 const ProfileContext = createContext(null)
@@ -12,10 +11,15 @@ export function ProfileProvider({ children }) {
   const [error, setError]         = useState(null)
 
   const fetchingRef = useRef(false)
+  const userRef     = useRef(user)       // stable ref so fetchProfile closure never goes stale
+
+  // keep userRef in sync on every render
+  useEffect(() => { userRef.current = user }, [user])
 
   const fetchProfile = useCallback(async () => {
     if (fetchingRef.current) return
-    if (!user) {
+    if (!userRef.current) {
+      fetchingRef.current = false
       setProfile(null)
       setAddresses([])
       setLoading(false)
@@ -36,12 +40,19 @@ export function ProfileProvider({ children }) {
       setError(err.message)
     } finally {
       setLoading(false)
-      fetchingRef.current = false     // 👈 release lock
+      fetchingRef.current = false
     }
-  }, [user])
+  }, [])  // stable — reads user via userRef, never rebuilds
 
-  // fetch on mount and whenever auth user changes
-  useEffect(() => { fetchProfile() }, [fetchProfile])
+  // re-fetch whenever auth user changes (login, logout, session restore)
+  useEffect(() => {
+    fetchingRef.current = false   // clear any in-flight lock from previous user
+    fetchProfile()
+
+    return () => {
+      fetchingRef.current = false  // cleanup so StrictMode's remount gets a clean slate
+    }
+  }, [user])  // user directly — ProfileProvider re-runs whenever useAuth updates
 
   const updateProfile = async (data) => {
     const res = await fetch("/api/users/me", {

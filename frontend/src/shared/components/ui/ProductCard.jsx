@@ -38,6 +38,24 @@ export default function Card({ product }) {
   const { addItem } = useCart();
   const navigate = useNavigate();
 
+  const isAdmin        = profile?.role === "admin";
+  const actionsVisible = !profileLoading; // hide both buttons until role is known
+
+  // inject keyframe once into the document
+  if (typeof document !== "undefined" && !document.getElementById("card-action-anim")) {
+    const s = document.createElement("style");
+    s.id = "card-action-anim";
+    s.textContent = `
+      @keyframes cardActionIn {
+        from { opacity: 0; transform: translateY(4px) scale(0.95); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+      }
+    `;
+    document.head.appendChild(s);
+  }
+
+  const actionAnim = { animation: "cardActionIn 0.2s ease-out both" };
+
   const primaryImage = product.images?.find(img => img.is_primary)?.url ?? null;
   const hoverImage   = product.images?.find(img => img.is_hover)?.url ?? null;
   const stock        = product.inventory?.stock ?? 0;
@@ -54,6 +72,7 @@ export default function Card({ product }) {
     e.stopPropagation();
     if (isSoldOut || adding) return;
     if (profileLoading) return;
+    if (isAdmin) return;
     if (!profile) {
       navigate("/login");
       return;
@@ -198,30 +217,37 @@ export default function Card({ product }) {
               {product.category.name}
             </span>
           )}
-          <div
-            style={{
-              borderRadius: "50%",
-              border: wished ? "2px solid var(--color-border)" : "none",
-            }}
-          >
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setWished(w => !w);
-              }}
-              className="flex items-center justify-center transition-all duration-200 active:scale-90"
-              style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
-            >
-              <Heart
-                className="w-4 h-4 m-2 transition-all duration-200"
+
+          {/* WISHLIST — reserved slot to prevent layout shift */}
+          <div style={{ width: "36px", height: "36px" }}>
+            {actionsVisible && !isAdmin && (
+              <div
                 style={{
-                  fill: wished ? "#ec4899" : "transparent",
-                  color: wished ? "#ec4899" : "var(--color-text-muted)",
-                  transform: wished ? "scale(1.25)" : "scale(1)",
+                  borderRadius: "50%",
+                  border: wished ? "2px solid var(--color-border)" : "none",
+                  ...actionAnim,
                 }}
-              />
-            </button>
+              >
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setWished(w => !w);
+                  }}
+                  className="flex items-center justify-center transition-all duration-200 active:scale-90"
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: "2px" }}
+                >
+                  <Heart
+                    className="w-4 h-4 m-2 transition-all duration-200"
+                    style={{
+                      fill: wished ? "#ec4899" : "transparent",
+                      color: wished ? "#ec4899" : "var(--color-text-muted)",
+                      transform: wished ? "scale(1.25)" : "scale(1)",
+                    }}
+                  />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -256,35 +282,39 @@ export default function Card({ product }) {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              disabled={isSoldOut || adding || profileLoading}
-              onClick={handleAddToCart}
-              className={`flex items-center gap-1.5 text-xs font-bold transition-all duration-200 active:scale-95 ${
-                isSoldOut || adding ? "cursor-not-allowed" : "hover:brightness-110"
-              }`}
-              style={{
-                background: isSoldOut
-                  ? "var(--color-text-subtle)"
-                  : adding
-                  ? "color-mix(in srgb, var(--color-primary) 70%, transparent)"
-                  : "var(--color-primary)",
-                color: "var(--hero-text)",
-                clipPath: "polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)",
-                paddingTop: "7px",
-                paddingBottom: "7px",
-                paddingLeft: "16px",
-                paddingRight: "16px",
-                borderRadius: "var(--radius)",
-                boxShadow: isSoldOut || adding
-                  ? "none"
-                  : "0 4px 12px color-mix(in srgb, var(--color-primary) 50%, transparent)",
-                transition: "background 0.2s, box-shadow 0.2s",
-              }}
-            >
-              <ShoppingCart className={`w-3.5 h-3.5 ${adding ? "animate-bounce" : ""}`} />
-              {isSoldOut ? "Sold" : adding ? "Adding…" : "Add"}
-            </button>
+          {/* CART BUTTON — reserved slot to prevent layout shift */}
+          <div style={{ minWidth: "72px", height: "32px", display: "flex", justifyContent: "flex-end" }}>
+            {actionsVisible && !isAdmin && (
+              <button
+                disabled={isSoldOut || adding}
+                onClick={handleAddToCart}
+                className={`flex items-center gap-1.5 text-xs font-bold transition-all duration-200 active:scale-95 ${
+                  isSoldOut || adding ? "cursor-not-allowed" : "hover:brightness-110"
+                }`}
+                style={{
+                  background: isSoldOut
+                    ? "var(--color-text-subtle)"
+                    : adding
+                    ? "color-mix(in srgb, var(--color-primary) 70%, transparent)"
+                    : "var(--color-primary)",
+                  color: "var(--hero-text)",
+                  clipPath: "polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%)",
+                  paddingTop: "7px",
+                  paddingBottom: "7px",
+                  paddingLeft: "16px",
+                  paddingRight: "16px",
+                  borderRadius: "var(--radius)",
+                  boxShadow: isSoldOut || adding
+                    ? "none"
+                    : "0 4px 12px color-mix(in srgb, var(--color-primary) 50%, transparent)",
+                  transition: "background 0.2s, box-shadow 0.2s",
+                  ...actionAnim,
+                }}
+              >
+                <ShoppingCart className={`w-3.5 h-3.5 ${adding ? "animate-bounce" : ""}`} />
+                {isSoldOut ? "Sold" : adding ? "Adding…" : "Add"}
+              </button>
+            )}
           </div>
         </div>
 

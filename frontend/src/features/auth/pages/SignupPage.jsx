@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Eye, EyeOff, Truck, Zap, Tag } from "lucide-react";
 import "../../../stylesheets/auth.css";
 
 // Scores password strength 0-4
@@ -23,9 +24,15 @@ const STRENGTH_META = [
     { label: "Strong", color: "#16a34a"             },
 ];
 
+const PERKS = [
+    { icon: Truck, text: "Free shipping on orders over ₱999" },
+    { icon: Zap,   text: "Early access to limited releases"  },
+    { icon: Tag,   text: "Members-only discounts & rewards"  },
+];
+
 export default function SignupPage() {
-    const { login }  = useAuth();
-    const navigate   = useNavigate();
+    const { register } = useAuth();
+    const navigate     = useNavigate();
 
     const [form, setForm] = useState({
         name:                  "",
@@ -72,32 +79,12 @@ export default function SignupPage() {
 
         setLoading(true);
         try {
-            // Fetch CSRF token before POST
-            await fetch("/sanctum/csrf-cookie", { credentials: "include" });
-
-            const res = await fetch("/api/register", {
-                method:      "POST",
-                credentials: "include",
-                headers:     { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name:                  form.name.trim(),
-                    email:                 form.email.trim(),
-                    password:              form.password,
-                    password_confirmation: form.password_confirmation,
-                }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                const firstError = data.errors
-                    ? Object.values(data.errors)[0][0]
-                    : data.message;
-                throw new Error(firstError || "Registration failed.");
-            }
-
-            // Auto login after successful registration
-            await login(form.email.trim(), form.password);
+            await register(
+                form.name.trim(),
+                form.email.trim(),
+                form.password,
+                form.password_confirmation,
+            );
             navigate("/");
         } catch (err) {
             setError(err.message);
@@ -121,13 +108,11 @@ export default function SignupPage() {
                     member-only deals, and a community that lives for fashion.
                 </p>
                 <ul className="auth-brand__perks">
-                    {[
-                        { icon: "🚚", text: "Free shipping on orders over ₱999" },
-                        { icon: "⚡", text: "Early access to limited releases"   },
-                        { icon: "🏷️", text: "Members-only discounts & rewards"  },
-                    ].map(({ icon, text }) => (
+                    {PERKS.map(({ icon: Icon, text }) => (
                         <li key={text} className="auth-brand__perk">
-                            <span className="auth-brand__perk-icon">{icon}</span>
+                            <span className="auth-brand__perk-icon">
+                                <Icon size={15} />
+                            </span>
                             {text}
                         </li>
                     ))}
@@ -194,7 +179,7 @@ export default function SignupPage() {
                                     onClick={() => setShowPassword((v) => !v)}
                                     aria-label={showPassword ? "Hide password" : "Show password"}
                                 >
-                                    {showPassword ? <EyeOff /> : <Eye />}
+                                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                                 </button>
                             </div>
                             <div className="auth-strength">
@@ -236,7 +221,7 @@ export default function SignupPage() {
                                     onClick={() => setShowConfirm((v) => !v)}
                                     aria-label={showConfirm ? "Hide password" : "Show password"}
                                 >
-                                    {showConfirm ? <EyeOff /> : <Eye />}
+                                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                                 </button>
                             </div>
                         </div>
@@ -268,25 +253,5 @@ export default function SignupPage() {
                 </div>
             </main>
         </div>
-    );
-}
-
-// Eye icons
-function Eye() {
-    return (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
-        </svg>
-    );
-}
-
-function EyeOff() {
-    return (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
-            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
-            <line x1="1" y1="1" x2="23" y2="23" />
-        </svg>
     );
 }

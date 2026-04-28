@@ -49,7 +49,7 @@ function NavDropdown({ label, links, isActive }) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative flex items-center gap-1  font-medium leading-none transition"
+        className="relative flex items-center gap-1 font-medium leading-none transition"
         style={{
           color: isAnyActive ? "var(--color-primary)" : "var(--color-text-muted)",
           background: "none",
@@ -59,7 +59,6 @@ function NavDropdown({ label, links, isActive }) {
         }}
       >
         <span className="text-sm">{label}</span>
-        
         <svg
           className="w-3 h-3 transition-transform duration-200"
           style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
@@ -105,12 +104,15 @@ function NavDropdown({ label, links, isActive }) {
 export default function Navbar() {
   const [open, setOpen]        = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { user }               = useAuth();
-  const { profile }            = useProfile();
+  const { user, logout }               = useAuth();
+  const { profile, loading: profileLoading } = useProfile();
 
   const hamburgerRef = useRef(null);
   const menuRef      = useRef(null);
   const location     = useLocation();
+
+  const isAdmin     = profile?.role === "admin";
+  const showCart    = !profileLoading && !isAdmin; // hide until role is known, then hide for admins
 
   const currentAvatar = useMemo(() => {
     const avatarId = profile?.avatar_id ?? 1;
@@ -135,8 +137,8 @@ export default function Navbar() {
   ];
 
   const legalLinks = [
-    { to: "/privacy-policy", label: "Privacy Policy"  },
-    { to: "/terms-of-service",   label: "Terms of Service" },
+    { to: "/privacy-policy",   label: "Privacy Policy"   },
+    { to: "/terms-of-service", label: "Terms of Service" },
   ];
 
   const dropdowns = [
@@ -205,9 +207,25 @@ export default function Navbar() {
             </button>
             <span style={{ color: "var(--color-border)" }}>|</span>
             {user ? (
-              <span className="opacity-60" style={{ color: "var(--color-text)" }}>
-                {profile?.name ?? user.name}
-              </span>
+              <>
+                <span className="opacity-60" style={{ color: "var(--color-text)" }}>
+                  {profile?.name ?? user.name}
+                </span>
+                <span style={{ color: "var(--color-border)" }}>|</span>
+                <button
+                  onClick={logout}
+                  className="transition hover:opacity-100 opacity-60"
+                  style={{
+                    color: "#ef4444",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link
@@ -288,9 +306,12 @@ export default function Navbar() {
 
           {/* RIGHT ACTIONS */}
           <div className="hidden md:flex items-center gap-3 ml-auto">
-            <Link to="/cart" className="relative p-1">
-              <img src={theme === "light" ? cart_light : cart_dark} className="w-7 h-7" alt="cart" />
-            </Link>
+            {/* Cart — hidden for admins */}
+            {showCart && (
+              <Link to="/cart" className="relative p-1">
+                <img src={theme === "light" ? cart_light : cart_dark} className="w-7 h-7" alt="cart" />
+              </Link>
+            )}
             <ProfileAvatar avatar={currentAvatar} />
           </div>
 
@@ -341,8 +362,15 @@ export default function Navbar() {
 
           <hr style={{ borderColor: "var(--color-border)" }} />
 
-          <Link to="/cart" onClick={() => setOpen(false)} className="text-sm opacity-70" style={{ color: "var(--color-text)" }}>Cart</Link>
-          <Link to="#" onClick={() => setOpen(false)} className="text-sm opacity-70" style={{ color: "var(--color-text)" }}>Notifications</Link>
+          {/* Cart — hidden for admins */}
+          {showCart && (
+            <Link to="/cart" onClick={() => setOpen(false)} className="text-sm opacity-70" style={{ color: "var(--color-text)" }}>
+              Cart
+            </Link>
+          )}
+          <Link to="#" onClick={() => setOpen(false)} className="text-sm opacity-70" style={{ color: "var(--color-text)" }}>
+            Notifications
+          </Link>
           <button
             onClick={() => { toggleTheme(); setOpen(false); }}
             className="text-sm opacity-70 text-left"
@@ -354,9 +382,18 @@ export default function Navbar() {
           <hr style={{ borderColor: "var(--color-border)" }} />
 
           {user ? (
-            <Link to="/profile" onClick={() => setOpen(false)} className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>
-              {profile?.name ?? user.name}
-            </Link>
+            <>
+              <Link to="/profile" onClick={() => setOpen(false)} className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>
+                {profile?.name ?? user.name}
+              </Link>
+              <button
+                onClick={() => { logout(); setOpen(false); }}
+                className="text-sm text-left"
+                style={{ color: "#ef4444", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login" onClick={() => setOpen(false)} className="text-sm" style={{ color: "var(--color-text)" }}>Login</Link>
